@@ -4,7 +4,10 @@ import model.AbstractTile;
 
 public class Tile extends AbstractTile {
 
+  public Tile()
+  {
 
+  }
     @Override
     public boolean open() {
         return false;

@@ -2,6 +2,7 @@ package model;
 import model.AbstractMineSweeper;
 import model.Difficulty;
 import view.Tile;
+import java.util.random.*;
 
 public class Minesweeper extends AbstractMineSweeper{
 
@@ -12,6 +13,9 @@ public class Minesweeper extends AbstractMineSweeper{
     private int bomb;
     private Difficulty level;
     private Tile t;
+    private AbstractTile[][] bombPlace;
+    private AbstractTile[][] openTiles;
+
 
 
     @Override
@@ -50,6 +54,11 @@ public class Minesweeper extends AbstractMineSweeper{
         }
     }
 
+    public void populateBoard()
+    {
+
+
+    }
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
 
@@ -81,11 +90,14 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void setWorld(AbstractTile[][] world) {
+        bombPlace = world;
+
 
     }
 
     @Override
     public void open(int x, int y) {
+        bombPlace[x][y].open();
 
     }
 
@@ -105,8 +117,9 @@ public class Minesweeper extends AbstractMineSweeper{
     }
 
     @Override
-    public AbstractTile generateEmptyTile() {
-        return null;
+    public AbstractTile generateEmptyTile()
+    {
+
     }
 
     @Override

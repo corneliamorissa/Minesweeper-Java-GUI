@@ -2,6 +2,8 @@ package model;
 import model.AbstractMineSweeper;
 import model.Difficulty;
 import view.Tile;
+import view.TileView;
+
 import java.util.random.*;
 
 public class Minesweeper extends AbstractMineSweeper{
@@ -119,7 +121,7 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public AbstractTile generateEmptyTile()
     {
-
+        return null;
     }
 
     @Override

@@ -15,8 +15,8 @@ public class Minesweeper extends AbstractMineSweeper{
     private int bomb;
     private Difficulty level;
     private Tile t;
-    private AbstractTile[][] bombPlace;
-    private AbstractTile[][] openTiles;
+    private AbstractTile[][] visibleBoard;
+    private AbstractTile[][] board;
 
 
 
@@ -54,11 +54,16 @@ public class Minesweeper extends AbstractMineSweeper{
             this.col = 30;
             bomb = 99;
         }
+
     }
 
     public void populateBoard()
     {
-
+        while(bomb != 0)
+        {
+            int a = (int)(Math.random()*row);
+            int b = (int)(Math.random()*col);
+        }
 
     }
     @Override
@@ -92,14 +97,13 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void setWorld(AbstractTile[][] world) {
-        bombPlace = world;
 
 
     }
 
     @Override
     public void open(int x, int y) {
-        bombPlace[x][y].open();
+
 
     }
 

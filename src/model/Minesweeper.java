@@ -23,12 +23,12 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public int getWidth() {
-        return width;
+        return col;
     }
 
     @Override
     public int getHeight() {
-        return height;
+        return row;
     }
 
     @Override

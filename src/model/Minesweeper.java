@@ -1,6 +1,7 @@
 package model;
 import model.AbstractMineSweeper;
 import model.Difficulty;
+import notifier.IGameStateNotifier;
 import view.Tile;
 import view.TileView;
 
@@ -12,11 +13,11 @@ public class Minesweeper extends AbstractMineSweeper{
     private int height;
     private int row;
     private int col;
-    private int bomb;
-    private Difficulty level;
+    private int b;
+    private Tile bomb;
     private Tile t;
-    private AbstractTile[][] visibleBoard;
-    private AbstractTile[][] board;
+    private Tile[][] visibleBoard;
+    private Tile[][] board;
 
 
 
@@ -32,19 +33,20 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void startNewGame(Difficulty level) {
-        this.level = level;
         if(level == Difficulty.EASY)
         {
             this.row = 8;
             this.col = 8;
-            bomb = 10;
+            b = 10;
+            populateBoard();
         }
 
         if(level == Difficulty.MEDIUM)
         {
             this.row = 16;
             this.col = 16;
-            bomb = 40;
+            b = 40;
+            populateBoard();
 
         }
 
@@ -52,17 +54,24 @@ public class Minesweeper extends AbstractMineSweeper{
         {
             this.row = 16;
             this.col = 30;
-            bomb = 99;
+            b = 99;
+            populateBoard();
         }
 
     }
 
     public void populateBoard()
     {
-        while(bomb != 0)
+        Tile[][] board = new Tile[row][col];
+        while(b != 0)
         {
             int a = (int)(Math.random()*row);
             int b = (int)(Math.random()*col);
+            if(board[a][b]== null)
+            {
+                board[a][b] = bomb;
+            }
+            b--;
         }
 
     }
@@ -71,7 +80,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
         this.row = row;
         this.col = col;
-        bomb = explosionCount;
+        b = explosionCount;
 
     }
 

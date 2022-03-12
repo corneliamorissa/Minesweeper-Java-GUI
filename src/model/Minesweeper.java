@@ -13,7 +13,6 @@ public class Minesweeper extends AbstractMineSweeper{
     private int height;
     private int row;
     private int col;
-    private int b;
     private Tile bomb;
     private Tile t;
     private Tile[][] visibleBoard;
@@ -35,35 +34,28 @@ public class Minesweeper extends AbstractMineSweeper{
     public void startNewGame(Difficulty level) {
         if(level == Difficulty.EASY)
         {
-            this.row = 8;
-            this.col = 8;
-            b = 10;
-            populateBoard();
+            startNewGame(8,8,10);
         }
 
         if(level == Difficulty.MEDIUM)
         {
-            this.row = 16;
-            this.col = 16;
-            b = 40;
-            populateBoard();
+            startNewGame(16,16,40);
 
         }
 
         if(level == Difficulty.HARD)
         {
-            this.row = 16;
-            this.col = 30;
-            b = 99;
-            populateBoard();
+            startNewGame(16,30,99);
         }
 
     }
 
-    public void populateBoard()
-    {
-        Tile[][] board = new Tile[row][col];
-        while(b != 0)
+
+    @Override
+    public void startNewGame(int row, int col, int explosionCount) {
+
+        board = new Tile[row][col];
+        while(explosionCount != 0)
         {
             int a = (int)(Math.random()*row);
             int b = (int)(Math.random()*col);
@@ -71,28 +63,22 @@ public class Minesweeper extends AbstractMineSweeper{
             {
                 board[a][b] = bomb;
             }
-            b--;
+            explosionCount--;
         }
 
-    }
-    @Override
-    public void startNewGame(int row, int col, int explosionCount) {
 
-        this.row = row;
-        this.col = col;
-        b = explosionCount;
 
     }
 
     @Override
     public void toggleFlag(int x, int y) {
-        if(t.isFlagged())
+        if(board[x][y].isFlagged())
         {
-            t.unflag();
+            board[x][y].unflag();
         }
 
         else{
-            t.flag();
+            board[x][y].flag();
         }
 
 

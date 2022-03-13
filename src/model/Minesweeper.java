@@ -9,14 +9,15 @@ import java.util.random.*;
 
 public class Minesweeper extends AbstractMineSweeper{
 
-    private int width;
-    private int height;
+
     private int row;
     private int col;
-    private Tile bomb;
-    private Tile t;
-    private Tile[][] visibleBoard;
     private Tile[][] board;
+
+    public Minesweeper()
+    {
+
+    }
 
 
 
@@ -55,16 +56,51 @@ public class Minesweeper extends AbstractMineSweeper{
     public void startNewGame(int row, int col, int explosionCount) {
 
         board = new Tile[row][col];
+        this.row = row;
+        this.col = col;
+
         while(explosionCount != 0)
         {
-            int a = (int)(Math.random()*row);
-            int b = (int)(Math.random()*col);
+             int a = (int)(Math.random()*row);
+             int b = (int)(Math.random()*col);
             if(board[a][b]== null)
             {
-                board[a][b] = bomb;
+                board[a][b].isExplosive();
             }
             explosionCount--;
         }
+
+        for(int i = 0; i<row ; i++)
+        {
+            for(int j =0; j<col;i++)
+            {
+                int bomb = 0;
+                int num = 0;
+                if(board[i][j].isExplosive())
+                {
+                    bomb = 1;
+                    num = 1;
+                    for(int d = i-1; d <= i+1 ; d ++)
+                    {
+                        for(int e = j-1 ; e<= j+1 ; j++)
+                        {
+                            if(board[i][j].isExplosive())
+                            {
+                                num++;
+                                bomb++;
+                            }
+
+                            else{
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        }
+
 
 
 

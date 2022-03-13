@@ -1,5 +1,5 @@
 import model.Difficulty;
-//import model.Minesweeper;
+import model.Minesweeper;
 import model.PlayableMinesweeper;
 import view.MinesweeperView;
 

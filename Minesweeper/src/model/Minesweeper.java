@@ -1,11 +1,6 @@
 package model;
-import model.AbstractMineSweeper;
-import model.Difficulty;
-import view.Tile;
-import view.TileView;
 
 import java.util.Random;
-import java.util.random.*;
 
 public class Minesweeper extends AbstractMineSweeper{
 

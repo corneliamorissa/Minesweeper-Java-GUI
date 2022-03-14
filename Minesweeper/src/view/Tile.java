@@ -4,6 +4,8 @@ import model.AbstractTile;
 
 public class Tile extends AbstractTile {
   private boolean bomb;
+  private int xAxis;
+  private int yAxis;
 
   public Tile(boolean b)
   {
@@ -19,8 +21,12 @@ public class Tile extends AbstractTile {
   public void flag() {
 
   }
+  public void setlocation(int x, int y)
 
-  @Override
+  {
+    xAxis = x;
+    yAxis = y;
+  }  @Override
   public void unflag() {
 
   }

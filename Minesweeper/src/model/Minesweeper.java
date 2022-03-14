@@ -69,11 +69,15 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
 
-        board = new Tile[row][col];
+
         this.row = row;
         this.col = col;
+        board = new Tile[row][col];
 
-        while (explosionCount != 0) {
+        int currentNumOfMines = 0;
+        Random random = new Random();
+
+        while (currentNumOfMines <= explosionCount ) {
             int a = (int) (Math.random() * row);
             int b = (int) (Math.random() * col);
             if (board[a][b] == null) {

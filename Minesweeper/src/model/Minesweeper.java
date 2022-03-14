@@ -14,7 +14,7 @@ public class Minesweeper extends AbstractMineSweeper{
     private Tile t;
     private AbstractTile[][] bombPlace;
     private AbstractTile[][] openTiles;
-    private Tile[][] board;
+    private AbstractTile[][] board;
     private int flagCounter;
 
 
@@ -70,7 +70,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
         this.row = row;
         this.col = col;
-        board = new Tile[col][row];
+        board = new AbstractTile[col][row];
 
 
         int currentNumOfMines = 0;
@@ -136,7 +136,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void setWorld(AbstractTile[][] world) {
-        board = (Tile[][]) world;
+       board = world;
 
 
     }
@@ -144,7 +144,14 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public void open(int x, int y) {
         if((x >= 0) && (y >= 0)  && (x < board.length )  &&  (y < board[0].length ) ){
-            board[x][y].open();
+            if(!board[x][y].isExplosive() && !board[x][y].isFlagged() )
+            {
+                board[x][y].open();
+            }
+            else if(board[x][y].isExplosive() && board[x][y].isFlagged() )
+            {
+                board[x][y].open();
+            }
         }
 
 

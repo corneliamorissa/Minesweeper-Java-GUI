@@ -22,13 +22,7 @@ public class Tile extends AbstractTile {
 
   @Override
   public boolean open() {
-    if(flag) {
-      unflag();
-    }
-    else if(isExplosive() && !isFlagged())
-    {
-      return false;
-    }
+
     open = true;
     return open;
   }

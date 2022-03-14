@@ -15,6 +15,8 @@ public class Minesweeper extends AbstractMineSweeper{
     private AbstractTile[][] bombPlace;
     private AbstractTile[][] openTiles;
     private Tile[][] board;
+    private int flagCounter;
+
 
 
 
@@ -70,6 +72,7 @@ public class Minesweeper extends AbstractMineSweeper{
         this.col = col;
         board = new Tile[col][row];
 
+
         int currentNumOfMines = 0;
         Random random = new Random();
 
@@ -108,13 +111,13 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void toggleFlag(int x, int y) {
-        if(t.isFlagged())
+        if(board[x][y].isFlagged())
         {
-            t.unflag();
+            board[x][y].unflag();
         }
 
         else{
-            t.flag();
+            board[x][y].flag();
         }
 
 
@@ -141,11 +144,15 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void flag(int x, int y) {
+        board[x][y].flag();
+        flagCounter = flagCounter + 1;
 
     }
 
     @Override
     public void unflag(int x, int y) {
+        board[x][y].unflag();
+        flagCounter = flagCounter - 1;
 
     }
 

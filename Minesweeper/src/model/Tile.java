@@ -6,6 +6,7 @@ public class Tile extends AbstractTile {
   private boolean bomb;
   private int xAxis;
   private int yAxis;
+  private boolean flag;
 
   public Tile(boolean b)
   {
@@ -25,6 +26,8 @@ public class Tile extends AbstractTile {
 
   @Override
   public void flag() {
+    flag = true;
+
 
   }
   public void setlocation(int x, int y)
@@ -36,13 +39,14 @@ public class Tile extends AbstractTile {
 
   @Override
   public void unflag() {
+    flag = false;
 
   }
 
 
   @Override
     public boolean isFlagged() {
-        return false;
+        return flag;
     }
 
     @Override

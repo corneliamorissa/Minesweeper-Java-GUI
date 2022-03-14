@@ -79,7 +79,7 @@ public class Minesweeper extends AbstractMineSweeper{
             int y = random.nextInt(col);
 
 
-            if(board[y][x] != null)
+            while(board[y][x] != null)
             {
                 x = random.nextInt(row);
                 y = random.nextInt(col);
@@ -87,7 +87,7 @@ public class Minesweeper extends AbstractMineSweeper{
             Tile t = new Tile(true, y,x);
             board[y][x] = t;
             currentNumOfMines = currentNumOfMines+ 1;
-            explosionCount--;
+
 
         }
         for (int i = 0; i < row; i++) {

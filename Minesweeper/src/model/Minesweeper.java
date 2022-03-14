@@ -1,5 +1,6 @@
 package model;
 
+import view.MinesweeperView;
 import java.util.Random;
 import java.util.Arrays;
 
@@ -18,6 +19,7 @@ public class Minesweeper extends AbstractMineSweeper{
     private int flagCounter;
 
 
+    public Minesweeper(){}
 
 
     @Override
@@ -34,43 +36,30 @@ public class Minesweeper extends AbstractMineSweeper{
     public void startNewGame(Difficulty level) {
         if (level == Difficulty.EASY) {
             startNewGame(8, 8, 10);
+            this.viewNotifier.notifyNewGame(8,8);
         }
 
         if (level == Difficulty.MEDIUM) {
             startNewGame(16, 16, 40);
+            this.viewNotifier.notifyNewGame(16,16);
 
         }
 
         if (level == Difficulty.HARD) {
             startNewGame(16, 30, 99);
+            this.viewNotifier.notifyNewGame(16,30);
         }
     }
 
-    public void populateBoard()
-    {
-        Random random = new Random();
 
-        int r = bomb;
 
-        for(int i = 0; i < row-1; i ++)
-        {
-            for(int j = 0; j < col - 1 ; j ++)
-            {
-
-            }
-        }
-
-    }
-    public void generateTiles()
-    {
-    }
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
-
 
         this.row = row;
         this.col = col;
         board = new AbstractTile[row][col];
+
 
 
         int currentNumOfMines = 0;
@@ -90,6 +79,7 @@ public class Minesweeper extends AbstractMineSweeper{
             Tile t = new Tile(true, x,y);
             board[y][x] = t;
             currentNumOfMines = currentNumOfMines+ 1;
+
 
 
         }
@@ -115,10 +105,12 @@ public class Minesweeper extends AbstractMineSweeper{
         if(board[y][x].isFlagged())
         {
             board[y][x].unflag();
+
         }
 
         else{
             board[y][x].flag();
+
         }
 
 
@@ -147,6 +139,7 @@ public class Minesweeper extends AbstractMineSweeper{
             if(!board[x][y].isExplosive() && !board[x][y].isFlagged() )
             {
                 board[x][y].open();
+
             }
             else if(board[x][y].isExplosive() && board[x][y].isFlagged() )
             {
@@ -162,6 +155,8 @@ public class Minesweeper extends AbstractMineSweeper{
     public void flag(int x, int y) {
         board[x][y].flag();
         flagCounter = flagCounter + 1;
+        this.viewNotifier.notifyFlagged(x,y);
+        this.viewNotifier.notifyFlagCountChanged(flagCounter);
 
     }
 
@@ -169,11 +164,14 @@ public class Minesweeper extends AbstractMineSweeper{
     public void unflag(int x, int y) {
         board[x][y].unflag();
         flagCounter = flagCounter - 1;
+        this.viewNotifier.notifyUnflagged(x,y);
+        this.viewNotifier.notifyFlagCountChanged(flagCounter);
 
     }
 
     @Override
     public void deactivateFirstTileRule() {
+
 
     }
 

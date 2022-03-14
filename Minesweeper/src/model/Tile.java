@@ -32,12 +32,14 @@ public class Tile extends AbstractTile {
     flag = true;
 
 
+
   }
   public void setlocation(int x, int y)
 
   {
     xAxis = x;
     yAxis = y;
+
   }
 
   @Override

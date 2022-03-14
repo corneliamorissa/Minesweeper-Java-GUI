@@ -11,6 +11,12 @@ public class Tile extends AbstractTile {
   {
     bomb = b;
   }
+  public Tile(boolean b, int x, int y)
+  {
+    bomb = b;
+    xAxis = x;
+    yAxis = y;
+  }
 
   @Override
   public boolean open() {

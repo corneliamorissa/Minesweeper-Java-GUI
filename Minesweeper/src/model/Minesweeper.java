@@ -78,13 +78,17 @@ public class Minesweeper extends AbstractMineSweeper{
         Random random = new Random();
 
         while (currentNumOfMines <= explosionCount ) {
-            int a = (int) (Math.random() * row);
-            int b = (int) (Math.random() * col);
-            if (board[a][b] == null) {
-                board[a][b].isExplosive();
-            }
-            explosionCount--;
+
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[0].length; j++) {
+
+                    double probability = random.nextDouble();
+
+
+
+
         }
+
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; i++) {

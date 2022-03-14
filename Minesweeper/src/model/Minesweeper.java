@@ -68,19 +68,26 @@ public class Minesweeper extends AbstractMineSweeper{
 
         this.row = row;
         this.col = col;
-        board = new Tile[row][col];
+        board = new Tile[col][row];
 
         int currentNumOfMines = 0;
         Random random = new Random();
 
-        while (currentNumOfMines <= explosionCount ) {
+        while (currentNumOfMines < explosionCount ) {
 
             int x = random.nextInt(row);
             int y = random.nextInt(col);
 
+
+            if(board[y][x] != null)
+            {
+                x = random.nextInt(row);
+                y = random.nextInt(col);
+            }
             Tile t = new Tile(true, y,x);
             board[y][x] = t;
             currentNumOfMines = currentNumOfMines+ 1;
+            explosionCount--;
 
         }
         for (int i = 0; i < row; i++) {
@@ -116,7 +123,7 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public AbstractTile getTile(int x, int y) {
 
-        return board[y][x];
+        return board[x][y];
     }
 
     @Override

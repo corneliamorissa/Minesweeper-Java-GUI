@@ -90,14 +90,13 @@ public class Minesweeper extends AbstractMineSweeper{
                                 bomb++;
                             }
 
-                            else{
-
                             }
 
                         }
                     }
-
                 }
+
+
             }
         }
 
@@ -122,12 +121,14 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public AbstractTile getTile(int x, int y) {
-
+        Tile t1=
+        board[x][y] =
         return null;
     }
 
     @Override
     public void setWorld(AbstractTile[][] world) {
+
 
 
     }
@@ -156,7 +157,8 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public AbstractTile generateEmptyTile()
     {
-        return null;
+        Tile t = new Tile();
+        return t;
     }
 
     @Override

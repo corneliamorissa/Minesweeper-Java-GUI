@@ -6,7 +6,6 @@ public class Tile extends AbstractTile {
 
   public Tile()
   {
-
   }
 
   @Override

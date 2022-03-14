@@ -3,10 +3,11 @@ package view;
 import model.AbstractTile;
 
 public class Tile extends AbstractTile {
+  private boolean bomb;
 
-  public Tile()
+  public Tile(boolean b)
   {
-
+    bomb = b;
   }
 
   @Override
@@ -32,7 +33,7 @@ public class Tile extends AbstractTile {
 
     @Override
     public boolean isExplosive() {
-        return false;
+        return bomb;
     }
 
     @Override

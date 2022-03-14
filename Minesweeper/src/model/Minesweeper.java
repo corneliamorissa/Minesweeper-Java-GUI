@@ -70,7 +70,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
         this.row = row;
         this.col = col;
-        board = new AbstractTile[col][row];
+        board = new AbstractTile[row][col];
 
 
         int currentNumOfMines = 0;
@@ -78,16 +78,16 @@ public class Minesweeper extends AbstractMineSweeper{
 
         while (currentNumOfMines < explosionCount ) {
 
-            int x = random.nextInt(row);
-            int y = random.nextInt(col);
+            int x = random.nextInt(col);
+            int y = random.nextInt(row);
 
 
             while(board[y][x] != null)
             {
-                x = random.nextInt(row);
-                y = random.nextInt(col);
+                x = random.nextInt(col);
+                y = random.nextInt(row);
             }
-            Tile t = new Tile(true, y,x);
+            Tile t = new Tile(true, x,y);
             board[y][x] = t;
             currentNumOfMines = currentNumOfMines+ 1;
 
@@ -95,10 +95,10 @@ public class Minesweeper extends AbstractMineSweeper{
         }
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if(board[j][i] ==null)
+                if(board[i][j] ==null)
                 {
                     Tile t = new Tile(false,j,i);
-                    board[j][i] = t;
+                    board[i][j] = t;
                 }
             }
             }
@@ -112,13 +112,13 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public void toggleFlag(int x, int y) {
 
-        if(board[x][y].isFlagged())
+        if(board[y][x].isFlagged())
         {
-            board[x][y].unflag();
+            board[y][x].unflag();
         }
 
         else{
-            board[x][y].flag();
+            board[y][x].flag();
         }
 
 
@@ -126,8 +126,8 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public AbstractTile getTile(int x, int y) {
-        if((x >= 0) && (y >= 0)  && (x < board.length )  &&  (y < board[0].length ) ){
-            return board[x][y];
+        if((x >= 0) && (y >= 0)  && (y < board.length )  &&  (x < board[0].length ) ){
+            return board[y][x];
         }
 
 

@@ -111,6 +111,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void toggleFlag(int x, int y) {
+
         if(board[x][y].isFlagged())
         {
             board[x][y].unflag();
@@ -125,20 +126,28 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public AbstractTile getTile(int x, int y) {
+        if((x >= 0) && (y >= 0)  && (x < board.length )  &&  (y < board[0].length ) ){
+            return board[x][y];
+        }
 
-        return board[x][y];
+
+        return null;
     }
 
     @Override
     public void setWorld(AbstractTile[][] world) {
-        bombPlace = world;
+        board = (Tile[][]) world;
 
 
     }
 
     @Override
     public void open(int x, int y) {
-        bombPlace[x][y].open();
+        if((x >= 0) && (y >= 0)  && (x < board.length )  &&  (y < board[0].length ) ){
+            board[x][y].open();
+        }
+
+
 
     }
 

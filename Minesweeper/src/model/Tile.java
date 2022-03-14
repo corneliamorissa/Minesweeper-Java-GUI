@@ -7,6 +7,7 @@ public class Tile extends AbstractTile {
   private int xAxis;
   private int yAxis;
   private boolean flag;
+  private boolean open;
 
   public Tile(boolean b)
   {
@@ -21,7 +22,15 @@ public class Tile extends AbstractTile {
 
   @Override
   public boolean open() {
-    return false;
+    if(flag) {
+      unflag();
+    }
+    else if(isExplosive() && !isFlagged())
+    {
+      return false;
+    }
+    open = true;
+    return open;
   }
 
   @Override
@@ -56,6 +65,6 @@ public class Tile extends AbstractTile {
 
     @Override
     public boolean isOpened() {
-        return false;
+        return open;
     }
 }

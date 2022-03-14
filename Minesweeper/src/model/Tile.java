@@ -32,7 +32,9 @@ public class Tile extends AbstractTile {
   {
     xAxis = x;
     yAxis = y;
-  }  @Override
+  }
+
+  @Override
   public void unflag() {
 
   }

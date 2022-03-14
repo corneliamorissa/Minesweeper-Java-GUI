@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Random;
+import java.util.Arrays;
 
 public class Minesweeper extends AbstractMineSweeper{
 
@@ -19,12 +20,12 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public int getWidth() {
-        return row;
+        return col;
     }
 
     @Override
     public int getHeight() {
-        return col;
+        return row;
     }
 
     @Override
@@ -74,40 +75,29 @@ public class Minesweeper extends AbstractMineSweeper{
 
         while (currentNumOfMines <= explosionCount ) {
 
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[0].length; j++) {
+            int x = random.nextInt(row);
+            int y = random.nextInt(col);
 
-                    double probability = random.nextDouble();
-
-
-
+            Tile t = new Tile(true, y,x);
+            board[y][x] = t;
+            currentNumOfMines = currentNumOfMines+ 1;
 
         }
-
-
         for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; i++) {
-                int bomb = 0;
-                int num = 0;
-                if (board[i][j].isExplosive()) {
-                    bomb = 1;
-                    num = 1;
-                    for (int d = i - 1; d <= i + 1; d++) {
-                        for (int e = j - 1; e <= j + 1; j++) {
-                            if (board[i][j].isExplosive()) {
-                                num++;
-                                bomb++;
-                            }
-
-                        }
-
-                    }
+            for (int j = 0; j < col; j++) {
+                if(board[j][i] ==null)
+                {
+                    Tile t = new Tile(false,j,i);
+                    board[j][i] = t;
                 }
+            }
             }
 
 
-        }
-    }
+
+
+
+            }
 
     @Override
     public void toggleFlag(int x, int y) {
@@ -126,7 +116,7 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public AbstractTile getTile(int x, int y) {
 
-        return board[x][y];
+        return board[y][x];
     }
 
     @Override

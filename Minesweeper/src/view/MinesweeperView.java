@@ -84,7 +84,7 @@ public class MinesweeperView implements IGameStateNotifier {
         }
         flagPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         try {
-            JLabel clockIcon = new JLabel(new ImageIcon(ImageIO.read(new File(AssetPath.FLAG_ICON)).getScaledInstance(20,20,Image.SCALE_AREA_AVERAGING)));
+            JLabel clockIcon = new JLabel(new ImageIcon(ImageIO.read(new File(AssetPath.FLAG_ICON)).getScaledInstance(20,20,Image.SCALE_DEFAULT)));
             clockIcon.setSize(new DimensionUIResource(50, 50));
             flagPanel.add(clockIcon);
             flagPanel.add(new JLabel("FLAG: "));

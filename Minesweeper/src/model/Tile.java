@@ -2,6 +2,9 @@ package model;
 
 import model.AbstractTile;
 
+import java.beans.ExceptionListener;
+import java.util.EmptyStackException;
+
 public class Tile extends AbstractTile {
   private boolean bomb;
   private int xAxis;
@@ -29,8 +32,8 @@ public class Tile extends AbstractTile {
 
   @Override
   public void flag() {
-    flag = true;
-
+      flag = true;
+      //this.viewNotifier.notifyFlagged();
 
 
   }
@@ -45,7 +48,7 @@ public class Tile extends AbstractTile {
   @Override
   public void unflag() {
     flag = false;
-
+    //this.viewNotifier.notifyUnflagged();
   }
 
 

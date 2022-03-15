@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import java.awt.*;
 import java.awt.event.MouseListener;
 
 import notifier.ITileStateNotifier;
@@ -10,6 +11,8 @@ import view.MinesweeperView.AssetPath;
 public class TileView extends JButton implements ITileStateNotifier {
     private static ImageIcon flagIcon = new ImageIcon(AssetPath.FLAG_ICON);
     private static ImageIcon bombIcon = new ImageIcon(AssetPath.BOMB_ICON);
+    //private static ImageIcon flagIcon = new ImageIcon(new ImageIcon(AssetPath.FLAG_ICON).getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
+    //private static ImageIcon bombIcon = new ImageIcon(new ImageIcon(AssetPath.BOMB_ICON).getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
 
     private int x, y;
     public TileView(int x, int y) {

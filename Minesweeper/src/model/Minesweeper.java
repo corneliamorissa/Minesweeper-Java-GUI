@@ -1,6 +1,9 @@
 package model;
 
+import notifier.IGameStateNotifier;
 import view.MinesweeperView;
+
+import java.time.Duration;
 import java.util.Random;
 import java.util.Arrays;
 
@@ -19,7 +22,8 @@ public class Minesweeper extends AbstractMineSweeper{
     private int flagCounter;
 
 
-    public Minesweeper(){}
+    public Minesweeper(){
+    }
 
 
     @Override
@@ -34,19 +38,24 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void startNewGame(Difficulty level) {
+        this.viewNotifier.notifyTimeElapsedChanged(Duration.ofSeconds(60));
         if (level == Difficulty.EASY) {
             startNewGame(8, 8, 10);
+            this.flagCounter = 10;
             this.viewNotifier.notifyNewGame(8,8);
+
         }
 
         if (level == Difficulty.MEDIUM) {
             startNewGame(16, 16, 40);
+            this.flagCounter = 40;
             this.viewNotifier.notifyNewGame(16,16);
 
         }
 
         if (level == Difficulty.HARD) {
             startNewGame(16, 30, 99);
+            this.flagCounter = 99;
             this.viewNotifier.notifyNewGame(16,30);
         }
     }
@@ -140,11 +149,20 @@ public class Minesweeper extends AbstractMineSweeper{
             {
                 board[x][y].open();
 
+
             }
             else if(board[x][y].isExplosive() && board[x][y].isFlagged() )
             {
                 board[x][y].open();
             }
+            /*else if(board[x][y].isExplosive() && !board[x][y].isFlagged())
+            {
+                board[x][y].open();
+                this.viewNotifier.notifyExploded(x,y);
+                this.viewNotifier.notifyGameLost();
+            }*/
+
+
         }
 
 
@@ -153,11 +171,12 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void flag(int x, int y) {
-        board[x][y].flag();
-        flagCounter = flagCounter + 1;
-        //this.viewNotifier.notifyFlagged(x,y);
-        //this.viewNotifier.notifyFlagCountChanged(flagCounter);
-
+        if (!board[x][y].isOpened()) {
+            board[x][y].flag();
+            flagCounter = flagCounter + 1;
+            //this.viewNotifier.notifyFlagged(x, y);
+            //this.viewNotifier.notifyFlagCountChanged(flagCounter);
+        }
     }
 
     @Override
@@ -171,7 +190,6 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void deactivateFirstTileRule() {
-
 
     }
 

@@ -155,8 +155,8 @@ public class Minesweeper extends AbstractMineSweeper{
     public void flag(int x, int y) {
         board[x][y].flag();
         flagCounter = flagCounter + 1;
-        this.viewNotifier.notifyFlagged(x,y);
-        this.viewNotifier.notifyFlagCountChanged(flagCounter);
+        //this.viewNotifier.notifyFlagged(x,y);
+        //this.viewNotifier.notifyFlagCountChanged(flagCounter);
 
     }
 
@@ -164,8 +164,8 @@ public class Minesweeper extends AbstractMineSweeper{
     public void unflag(int x, int y) {
         board[x][y].unflag();
         flagCounter = flagCounter - 1;
-        this.viewNotifier.notifyUnflagged(x,y);
-        this.viewNotifier.notifyFlagCountChanged(flagCounter);
+        //this.viewNotifier.notifyUnflagged(x,y);
+        //this.viewNotifier.notifyFlagCountChanged(flagCounter);
 
     }
 

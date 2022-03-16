@@ -58,6 +58,7 @@ public class Minesweeper extends AbstractMineSweeper{
             this.flagCounter = 99;
             this.viewNotifier.notifyNewGame(16,30);
         }
+        this.viewNotifier.notifyFlagCountChanged(flagCounter);
     }
 
 

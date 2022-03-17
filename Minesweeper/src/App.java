@@ -16,7 +16,5 @@ public class App {
         */
         view.setGameModel(model);
         model.startNewGame(Difficulty.EASY);
-
-
     }
 }

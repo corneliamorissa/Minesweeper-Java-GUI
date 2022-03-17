@@ -162,6 +162,21 @@ public class Minesweeper extends AbstractMineSweeper{
             if(!board[x][y].isExplosive() && !board[x][y].isFlagged() )
             {
                 board[x][y].open();
+                try {
+                    int bombCount = 0;
+                    for (int r = y - 1; r <= y + 1; r++) {
+                        for (int c = x - 1; c <= x + 1; c++) {
+                            if (board[r][c].isExplosive() && isValid(c, r)) {
+                                bombCount++;
+                            }
+                        }
+                    }
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+
+                }
+
 
 
             }

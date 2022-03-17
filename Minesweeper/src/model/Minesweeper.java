@@ -6,6 +6,7 @@ import view.MinesweeperView;
 import java.time.Duration;
 import java.util.Random;
 import java.util.Arrays;
+import java.lang.Exception;
 
 public class Minesweeper extends AbstractMineSweeper{
 
@@ -158,23 +159,24 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void open(int x, int y) {
-        if((x >= 0) && (y >= 0)  && (x < board.length )  &&  (y < board[0].length ) ){
-            if(!board[x][y].isExplosive() && !board[x][y].isFlagged() )
-            {
+
+        if (x < 0 || x >= row || y < 0 || y >= col) {
+
+        }
+        else {
+            if (!board[x][y].isExplosive() && !board[x][y].isFlagged()) {
                 board[x][y].open();
-                openNum(x,y);
-
-
-
-                }
-
+                openNum(x, y);
 
 
             }
-            else if(board[x][y].isExplosive() && board[x][y].isFlagged() )
-            {
-                board[x][y].open();
-            }
+
+
+
+            else if (board[x][y].isExplosive() && board[x][y].isFlagged()) {
+            board[x][y].open();
+        }
+    }
             /*else if(board[x][y].isExplosive() && !board[x][y].isFlagged())
             {
                 board[x][y].open();
@@ -187,7 +189,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
 
 
-    }
+
 
     @Override
     public void flag(int x, int y) {
@@ -252,7 +254,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
 
     }
-        board[x][y].viewNotifier.notifyOpened(bombCount);
+       // board[x][y].viewNotifier.notifyOpened(bombCount);
 }
 public void openBomb()
 {

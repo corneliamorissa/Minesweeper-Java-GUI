@@ -82,7 +82,6 @@ public class Minesweeper extends AbstractMineSweeper{
         board = new AbstractTile[row][col];
 
 
-
         int currentNumOfMines = 0;
         Random random = new Random();
 
@@ -165,9 +164,21 @@ public class Minesweeper extends AbstractMineSweeper{
         }
         else {
             if (!board[x][y].isExplosive() && !board[x][y].isFlagged()) {
-                board[x][y].open();
-                openNum(x, y);
+                int bombCount = 0;
 
+                for (int r = y - 1; r <= y + 1; r++) {
+                    for (int c = x - 1; c <= x + 1; c++) {
+                        if (isValid(c,r)) {
+                            if(board[r][c].isExplosive())
+                            {
+                                bombCount++;
+                            }
+                        }
+                    }
+                }
+                board[x][y].open();
+                this.viewNotifier.notifyOpened(x,y,bombCount);
+                //openNum(x, y);
 
             }
 
@@ -238,23 +249,16 @@ public class Minesweeper extends AbstractMineSweeper{
     {
         int bombCount = 0;
 
-        try {
-
             for (int r = y - 1; r <= y + 1; r++) {
                 for (int c = x - 1; c <= x + 1; c++) {
-                    if (board[r][c].isExplosive() && isValid(c, r)) {
+                    if (board[r][c].isExplosive() && isValid(c,r)) {
                         bombCount++;
                     }
                 }
             }
 
-        }
-        catch (ArrayIndexOutOfBoundsException e)
-        {
 
 
-    }
-       // board[x][y].viewNotifier.notifyOpened(bombCount);
 }
 public void openBomb()
 {

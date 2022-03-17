@@ -61,6 +61,16 @@ public class Minesweeper extends AbstractMineSweeper{
         this.viewNotifier.notifyFlagCountChanged(flagCounter);
     }
 
+    public boolean isValid(int x, int y)
+    {
+        if((x >= 0) && (y >= 0)  && (y < row )  &&  (x < col) ){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 
 
     @Override
@@ -97,8 +107,11 @@ public class Minesweeper extends AbstractMineSweeper{
             for (int j = 0; j < col; j++) {
                 if(board[i][j] ==null)
                 {
-                    Tile t = new Tile(false,j,i);
-                    board[i][j] = t;
+
+                        Tile t = new Tile(false, j, i);
+                        board[i][j] = t;
+
+
                 }
             }
             }
@@ -118,7 +131,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
         }
 
-        else{
+        else {
             board[y][x].flag();
 
         }
@@ -172,20 +185,25 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void flag(int x, int y) {
-        if (!board[x][y].isOpened()) {
-            board[x][y].flag();
+        if (!board[y][x].isOpened()) {
+            board[y][x].flag();
             flagCounter = flagCounter + 1;
             //this.viewNotifier.notifyFlagged(x, y);
             //this.viewNotifier.notifyFlagCountChanged(flagCounter);
         }
+
+
     }
 
     @Override
     public void unflag(int x, int y) {
-        board[x][y].unflag();
-        flagCounter = flagCounter - 1;
-        //this.viewNotifier.notifyUnflagged(x,y);
-        //this.viewNotifier.notifyFlagCountChanged(flagCounter);
+        if (board[y][x].isFlagged()) {
+            board[y][x].unflag();
+            flagCounter = flagCounter - 1;
+            //this.viewNotifier.notifyUnflagged(x,y);
+            //this.viewNotifier.notifyFlagCountChanged(flagCounter);
+        }
+
 
     }
 

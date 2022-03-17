@@ -118,7 +118,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
 
 
-
+            this.viewNotifier.notifyNewGame(row,col);
 
             }
 
@@ -128,11 +128,16 @@ public class Minesweeper extends AbstractMineSweeper{
         if(board[y][x].isFlagged())
         {
             board[y][x].unflag();
+            this.viewNotifier.notifyUnflagged(x,y);
+            this.viewNotifier.notifyFlagCountChanged(flagCounter);
+
 
         }
 
         else {
             board[y][x].flag();
+            this.viewNotifier.notifyFlagged(x, y);
+            this.viewNotifier.notifyFlagCountChanged(flagCounter);
 
         }
 
@@ -207,8 +212,9 @@ public class Minesweeper extends AbstractMineSweeper{
         if (!board[y][x].isOpened()) {
             board[y][x].flag();
             flagCounter = flagCounter + 1;
-            //this.viewNotifier.notifyFlagged(x, y);
-            //this.viewNotifier.notifyFlagCountChanged(flagCounter);
+
+            this.viewNotifier.notifyFlagged(x, y);
+            this.viewNotifier.notifyFlagCountChanged(flagCounter);
         }
 
 
@@ -219,8 +225,8 @@ public class Minesweeper extends AbstractMineSweeper{
         if (board[y][x].isFlagged()) {
             board[y][x].unflag();
             flagCounter = flagCounter - 1;
-            //this.viewNotifier.notifyUnflagged(x,y);
-            //this.viewNotifier.notifyFlagCountChanged(flagCounter);
+            this.viewNotifier.notifyUnflagged(x,y);
+            this.viewNotifier.notifyFlagCountChanged(flagCounter);
         }
 
 

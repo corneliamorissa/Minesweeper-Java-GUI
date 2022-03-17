@@ -44,7 +44,8 @@ public class Tile extends AbstractTile {
   @Override
   public void flag() {
       flag = true;
-      this.viewNotifier.notifyFlagged();
+      //this.viewNotifier.notifyFlagged();
+
 
 
   }
@@ -59,7 +60,7 @@ public class Tile extends AbstractTile {
   @Override
   public void unflag() {
     flag = false;
-    this.viewNotifier.notifyUnflagged();
+    //this.viewNotifier.notifyUnflagged(xAxis,yAxis);
   }
 
 

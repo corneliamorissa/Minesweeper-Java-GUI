@@ -129,6 +129,7 @@ public class Minesweeper extends AbstractMineSweeper{
         {
             board[y][x].unflag();
             this.viewNotifier.notifyUnflagged(x,y);
+            flagCounter = flagCounter + 1;
             this.viewNotifier.notifyFlagCountChanged(flagCounter);
 
 
@@ -137,6 +138,7 @@ public class Minesweeper extends AbstractMineSweeper{
         else {
             board[y][x].flag();
             this.viewNotifier.notifyFlagged(x, y);
+            flagCounter = flagCounter - 1;
             this.viewNotifier.notifyFlagCountChanged(flagCounter);
 
         }
@@ -178,6 +180,10 @@ public class Minesweeper extends AbstractMineSweeper{
                             {
                                 bombCount++;
                             }
+                            else
+                            {
+                                board[r][c].open();
+                            }
                         }
                     }
                 }
@@ -192,13 +198,14 @@ public class Minesweeper extends AbstractMineSweeper{
             else if (board[x][y].isExplosive() && board[x][y].isFlagged()) {
             board[x][y].open();
         }
-    }
-            /*else if(board[x][y].isExplosive() && !board[x][y].isFlagged())
+
+            else if(board[x][y].isExplosive() && !board[x][y].isFlagged())
             {
                 board[x][y].open();
                 this.viewNotifier.notifyExploded(x,y);
                 this.viewNotifier.notifyGameLost();
-            }*/
+            }
+    }
 
 
         }
@@ -211,9 +218,10 @@ public class Minesweeper extends AbstractMineSweeper{
     public void flag(int x, int y) {
         if (!board[y][x].isOpened()) {
             board[y][x].flag();
-            flagCounter = flagCounter + 1;
+
 
             this.viewNotifier.notifyFlagged(x, y);
+            flagCounter = flagCounter - 1;
             this.viewNotifier.notifyFlagCountChanged(flagCounter);
         }
 
@@ -224,8 +232,9 @@ public class Minesweeper extends AbstractMineSweeper{
     public void unflag(int x, int y) {
         if (board[y][x].isFlagged()) {
             board[y][x].unflag();
-            flagCounter = flagCounter - 1;
+
             this.viewNotifier.notifyUnflagged(x,y);
+            flagCounter = flagCounter + 1;
             this.viewNotifier.notifyFlagCountChanged(flagCounter);
         }
 
@@ -266,8 +275,5 @@ public class Minesweeper extends AbstractMineSweeper{
 
 
 }
-public void openBomb()
-{
 
-}
 }

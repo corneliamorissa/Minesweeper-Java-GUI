@@ -189,9 +189,10 @@ public class Minesweeper extends AbstractMineSweeper{
                 {
                     board[x][y].open();
                     this.viewNotifier.notifyOpened(x, y, 0);
-                    for (int r = y - 1; r <= y + 1; r++) {
-                        for (int c = x - 1; c <= x + 1; c++) {
-                            if (isValid(c,r) && !board[r][c].isExplosive() && !board[r][c].isOpened()) {
+                    for (int r = - 1; r < 2; r++) {
+                        for (int c =  - 1; c < 2; c++) {
+                            if (isValid(y + c,x + r) && !board[x + r][y + c].isExplosive() && !board[x + r][y + c].isOpened())
+                            {
                                     open(r,c);
 
                                 }
@@ -285,7 +286,7 @@ public void openBoard()
             } else {
                 board[x][y].open();
 
-                this.viewNotifier.notifyOpened(x, y, 0);
+                this.viewNotifier.notifyOpened(x, y, bombCount(x,  y));
             }
         }
     }
@@ -295,10 +296,10 @@ public int bombCount(int x, int y)
 {
     int bombCount = 0;
 
-    for (int r = y - 1; r <= y + 1; r++) {
-        for (int c = x - 1; c <= x + 1; c++) {
-            if (isValid(c,r)) {
-                if(board[r][c].isExplosive())
+    for (int r = - 1; r < 2; r++) {
+        for (int c =  - 1; c < 2; c++) {
+            if (isValid(y + c,x + r)) {
+                if(board[x + r][y + c].isExplosive())
                 {
                     bombCount++;
                 }

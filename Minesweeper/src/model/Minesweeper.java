@@ -183,21 +183,27 @@ public class Minesweeper extends AbstractMineSweeper{
         }
         else {
             if (!board[x][y].isExplosive() && !board[x][y].isFlagged()) {
-                int bombCount = 0;
 
-                for (int r = y - 1; r <= y + 1; r++) {
-                    for (int c = x - 1; c <= x + 1; c++) {
-                        if (isValid(c,r)) {
-                            if(board[r][c].isExplosive())
-                            {
-                                bombCount++;
+                int bombs = bombCount(x,y);
+                if(bombs == 0)
+                {
+                    board[x][y].open();
+                    this.viewNotifier.notifyOpened(x, y, 0);
+                    for (int r = y - 1; r <= y + 1; r++) {
+                        for (int c = x - 1; c <= x + 1; c++) {
+                            if (isValid(c,r) && !board[r][c].isExplosive()) {
+                                    int otherBomb = bombCount(r,c);
+                                    board[r][c].open();
+                                    this.viewNotifier.notifyOpened(r, c, otherBomb);
+                                }
+                            }
                             }
                         }
-                    }
+                else {
+                    board[x][y].open();
+                    this.viewNotifier.notifyOpened(x, y, bombs);
+
                 }
-                board[x][y].open();
-                this.viewNotifier.notifyOpened(x, y, bombCount);
-                //openNum(x, y);
 
             }
             else if (board[x][y].isExplosive() && board[x][y].isFlagged())
@@ -268,23 +274,22 @@ public class Minesweeper extends AbstractMineSweeper{
         return t;
     }
 
-    public void openNum(int x,int y)
-    {
-        int bombCount = 0;
 
-            for (int r = y - 1; r <= y + 1; r++) {
-                for (int c = x - 1; c <= x + 1; c++) {
-                    if (board[r][c].isExplosive() && isValid(c,r)) {
-                        bombCount++;
-                    }
+public int bombCount(int x, int y)
+{
+    int bombCount = 0;
+
+    for (int r = y - 1; r <= y + 1; r++) {
+        for (int c = x - 1; c <= x + 1; c++) {
+            if (isValid(c,r)) {
+                if(board[r][c].isExplosive())
+                {
+                    bombCount++;
                 }
             }
-
-
-
-}
-public void openBomb()
-{
+        }
+    }
+    return( bombCount);
 
 }
 }

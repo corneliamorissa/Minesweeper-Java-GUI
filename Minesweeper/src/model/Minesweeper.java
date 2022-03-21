@@ -99,7 +99,7 @@ public class Minesweeper extends AbstractMineSweeper{
             int y = random.nextInt(row);
 
 
-            while(board[y][x] != null)
+            while(getTile(x,y) != null)
             {
                 x = random.nextInt(col);
                 y = random.nextInt(row);
@@ -134,10 +134,10 @@ public class Minesweeper extends AbstractMineSweeper{
     public void toggleFlag(int x, int y) {
 
         int initialCount = flagCounter;
-        if(board[y][x].isFlagged())
+        if(getTile(x,y).isFlagged())
         {
 
-                board[y][x].unflag();
+                getTile(x,y).unflag();
                 this.viewNotifier.notifyUnflagged(x, y);
                 flagCounter = flagCounter + 1;
                 this.viewNotifier.notifyFlagCountChanged(flagCounter);
@@ -148,7 +148,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
         else {
             if(flagCounter>=0) {
-                board[y][x].flag();
+                getTile(x,y).flag();
                 this.viewNotifier.notifyFlagged(x, y);
                 flagCounter = flagCounter - 1;
                 this.viewNotifier.notifyFlagCountChanged(flagCounter);
@@ -178,43 +178,43 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public void open(int x, int y) {
 
-        if (x < 0 || x >= row || y < 0 || y >= col) {
+        if (x < 0 || x >= col || y < 0 || y >= row) {
 
         }
         else {
-            if (!board[x][y].isExplosive() && !board[x][y].isFlagged()) {
+            if (!getTile(x,y).isExplosive() && !getTile(x,y).isFlagged()) {
 
                 int bombs = bombCount(x,y);
                 if(bombs == 0)
                 {
-                    board[x][y].open();
+                    getTile(x,y).open();
                     this.viewNotifier.notifyOpened(x, y, 0);
                     for (int r = - 1; r < 2; r++) {
                         for (int c =  - 1; c < 2; c++) {
-                            if (isValid(y + c,x + r) && !board[x + r][y + c].isExplosive() && !board[x + r][y + c].isOpened())
+                            if (isValid(x + c,y + r) && !getTile(x + c,y + r).isExplosive() && !getTile(x + c,y + r).isOpened())
                             {
-                                    open(r,c);
+                                    open(x +c,y + r);
 
                                 }
                             }
                             }
                         }
                 else {
-                    board[x][y].open();
+                    getTile(x,y).open();
                     this.viewNotifier.notifyOpened(x, y, bombs);
 
                 }
 
             }
-            else if (board[x][y].isExplosive() && board[x][y].isFlagged())
+            else if (getTile(x,y).isExplosive() && getTile(x,y).isFlagged())
             {
-                board[x][y].open();
+                getTile(x,y).open();
             }
 
 
-            else if(board[x][y].isExplosive() && !board[x][y].isFlagged())
+            else if(getTile(x,y).isExplosive() && !getTile(x,y).isFlagged())
             {
-                board[x][y].open();
+                getTile(x,y).open();
                 openBoard();
 
                 this.viewNotifier.notifyExploded(x,y);
@@ -231,8 +231,8 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void flag(int x, int y) {
-        if (!board[y][x].isOpened()) {
-            board[y][x].flag();
+        if (!getTile(x,y).isOpened()) {
+            getTile(x,y).flag();
 
 
             /*this.viewNotifier.notifyFlagged(x, y);
@@ -245,8 +245,8 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void unflag(int x, int y) {
-        if (board[y][x].isFlagged()) {
-            board[y][x].unflag();
+        if (getTile(x,y).isFlagged()) {
+            getTile(x,y).unflag();
 
             /*this.viewNotifier.notifyUnflagged(x,y);
             flagCounter = flagCounter + 1;
@@ -277,14 +277,14 @@ public class Minesweeper extends AbstractMineSweeper{
     }
 public void openBoard()
 {
-    for(int x = 0 ; x < row ; x++)
+    for(int x = 0 ; x < col ; x++)
     {
-        for(int y = 0 ; y < col;y++) {
-            if (board[x][y].isExplosive()) {
-                board[x][y].open();
+        for(int y = 0 ; y < row;y++) {
+            if (getTile(x,y).isExplosive()) {
+                getTile(x,y).open();
                 this.viewNotifier.notifyExploded(x,y);
             } else {
-                board[x][y].open();
+                getTile(x,y).open();
 
                 this.viewNotifier.notifyOpened(x, y, bombCount(x,  y));
             }
@@ -298,8 +298,8 @@ public int bombCount(int x, int y)
 
     for (int r = - 1; r < 2; r++) {
         for (int c =  - 1; c < 2; c++) {
-            if (isValid(y + c,x + r)) {
-                if(board[x + r][y + c].isExplosive())
+            if (isValid(x + c,y + r)) {
+                if(getTile(x + c,y + r).isExplosive())
                 {
                     bombCount++;
                 }

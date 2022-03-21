@@ -22,10 +22,13 @@ public class Minesweeper extends AbstractMineSweeper{
     private AbstractTile[][] board;
     private int flagCounter;
     private long time;
+    private boolean firstClick;
+    private int currentNumOfMines;
 
 
 
     public Minesweeper(){
+        this.firstClick = true;
     }
 
 
@@ -87,13 +90,12 @@ public class Minesweeper extends AbstractMineSweeper{
 
         this.row = row;
         this.col = col;
+        this.bomb = explosionCount;
         board = new AbstractTile[row][col];
-
-
-        int currentNumOfMines = 0;
+        currentNumOfMines = 0;
         Random random = new Random();
 
-        while (currentNumOfMines < explosionCount ) {
+        while (currentNumOfMines < bomb ) {
 
             int x = random.nextInt(col);
             int y = random.nextInt(row);
@@ -126,7 +128,9 @@ public class Minesweeper extends AbstractMineSweeper{
 
 
 
+
             this.viewNotifier.notifyNewGame(row,col);
+
 
             }
 
@@ -178,10 +182,12 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public void open(int x, int y) {
 
+
         if (x < 0 || x >= row || y < 0 || y >= col) {
 
         }
         else {
+
             if (!board[x][y].isExplosive() && !board[x][y].isFlagged()) {
 
                 int bombs = bombCount(x,y);
@@ -196,6 +202,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
                                 }
                             }
+
                             }
                         }
                 else {
@@ -204,14 +211,28 @@ public class Minesweeper extends AbstractMineSweeper{
 
                 }
 
+                board[x][y].open();
+                deactivateFirstTileRule();
+                this.viewNotifier.notifyOpened(x, y, bombCount);
+                //openNum(x, y);
+
+
             }
             else if (board[x][y].isExplosive() && board[x][y].isFlagged())
             {
                 board[x][y].open();
+                deactivateFirstTileRule();
             }
 
 
-            else if(board[x][y].isExplosive() && !board[x][y].isFlagged())
+            else if(board[x][y].isExplosive() && !board[x][y].isFlagged() && firstClick)
+            {
+                replaceMine(x,y);
+                board[x][y] = generateEmptyTile();
+                board[x][y].open();
+                deactivateFirstTileRule();
+            }
+            else if(board[x][y].isExplosive() && !board[x][y].isFlagged() && !firstClick)
             {
                 board[x][y].open();
                 openBoard();
@@ -222,10 +243,33 @@ public class Minesweeper extends AbstractMineSweeper{
         }
 
 
+
         }
 
 
 
+        public void replaceMine(int x, int y)
+        {
+            Random random = new Random();
+
+            while (currentNumOfMines < bomb ) {
+
+                int i = random.nextInt(row);
+                int j = random.nextInt(col);
+
+
+                if(i!=x && j!= y && !board[i][j].isExplosive())
+                {
+                    board[i][j] = generateExplosiveTile();
+                }
+
+                currentNumOfMines = currentNumOfMines+ 1;
+
+
+
+            }
+
+        }
 
 
     @Override
@@ -257,8 +301,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void deactivateFirstTileRule() {
-        this.viewNotifier.notifyTimeElapsedChanged(Duration.ofSeconds(60));
-
+        firstClick = false;
     }
 
     @Override

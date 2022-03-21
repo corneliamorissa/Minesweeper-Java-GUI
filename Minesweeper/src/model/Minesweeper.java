@@ -191,10 +191,9 @@ public class Minesweeper extends AbstractMineSweeper{
                     this.viewNotifier.notifyOpened(x, y, 0);
                     for (int r = y - 1; r <= y + 1; r++) {
                         for (int c = x - 1; c <= x + 1; c++) {
-                            if (isValid(c,r) && !board[r][c].isExplosive()) {
-                                    int otherBomb = bombCount(r,c);
-                                    board[r][c].open();
-                                    this.viewNotifier.notifyOpened(r, c, otherBomb);
+                            if (isValid(c,r) && !board[r][c].isExplosive() && !board[r][c].isOpened()) {
+                                    open(r,c);
+
                                 }
                             }
                             }
@@ -215,6 +214,8 @@ public class Minesweeper extends AbstractMineSweeper{
             else if(board[x][y].isExplosive() && !board[x][y].isFlagged())
             {
                 board[x][y].open();
+                openBoard();
+
                 this.viewNotifier.notifyExploded(x,y);
                 this.viewNotifier.notifyGameLost();
             }
@@ -273,7 +274,22 @@ public class Minesweeper extends AbstractMineSweeper{
         Tile t = new Tile(true);
         return t;
     }
+public void openBoard()
+{
+    for(int x = 0 ; x < row ; x++)
+    {
+        for(int y = 0 ; y < col;y++) {
+            if (board[x][y].isExplosive()) {
+                board[x][y].open();
+                this.viewNotifier.notifyExploded(x,y);
+            } else {
+                board[x][y].open();
 
+                this.viewNotifier.notifyOpened(x, y, 0);
+            }
+        }
+    }
+}
 
 public int bombCount(int x, int y)
 {

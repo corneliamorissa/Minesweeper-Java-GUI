@@ -21,6 +21,8 @@ public class Minesweeper extends AbstractMineSweeper{
     private AbstractTile[][] openTiles;
     private AbstractTile[][] board;
     private int flagCounter;
+    private long time;
+
 
 
     public Minesweeper(){
@@ -39,7 +41,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void startNewGame(Difficulty level) {
-        this.viewNotifier.notifyTimeElapsedChanged(Duration.ofSeconds(60));
+        this.viewNotifier.notifyTimeElapsedChanged(Duration.ofSeconds(time));
         if (level == Difficulty.EASY) {
             startNewGame(8, 8, 10);
             this.flagCounter = 10;
@@ -70,6 +72,12 @@ public class Minesweeper extends AbstractMineSweeper{
         else{
             return false;
         }
+    }
+
+    public void startTimer()
+    {
+        this.time = System.currentTimeMillis();
+        int i = 0;
     }
 
 
@@ -125,22 +133,26 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public void toggleFlag(int x, int y) {
 
+        int initialCount = flagCounter;
         if(board[y][x].isFlagged())
         {
-            board[y][x].unflag();
-            this.viewNotifier.notifyUnflagged(x,y);
-            flagCounter = flagCounter + 1;
-            this.viewNotifier.notifyFlagCountChanged(flagCounter);
+
+                board[y][x].unflag();
+                this.viewNotifier.notifyUnflagged(x, y);
+                flagCounter = flagCounter + 1;
+                this.viewNotifier.notifyFlagCountChanged(flagCounter);
+
 
 
         }
 
         else {
-            board[y][x].flag();
-            this.viewNotifier.notifyFlagged(x, y);
-            flagCounter = flagCounter - 1;
-            this.viewNotifier.notifyFlagCountChanged(flagCounter);
-
+            if(flagCounter>=0) {
+                board[y][x].flag();
+                this.viewNotifier.notifyFlagged(x, y);
+                flagCounter = flagCounter - 1;
+                this.viewNotifier.notifyFlagCountChanged(flagCounter);
+            }
         }
 
 
@@ -180,24 +192,19 @@ public class Minesweeper extends AbstractMineSweeper{
                             {
                                 bombCount++;
                             }
-                            else
-                            {
-                                board[r][c].open();
-                            }
                         }
                     }
                 }
                 board[x][y].open();
-                this.viewNotifier.notifyOpened(x,y,bombCount);
+                this.viewNotifier.notifyOpened(x, y, bombCount);
                 //openNum(x, y);
 
             }
+            else if (board[x][y].isExplosive() && board[x][y].isFlagged())
+            {
+                board[x][y].open();
+            }
 
-
-
-            else if (board[x][y].isExplosive() && board[x][y].isFlagged()) {
-            board[x][y].open();
-        }
 
             else if(board[x][y].isExplosive() && !board[x][y].isFlagged())
             {
@@ -205,7 +212,7 @@ public class Minesweeper extends AbstractMineSweeper{
                 this.viewNotifier.notifyExploded(x,y);
                 this.viewNotifier.notifyGameLost();
             }
-    }
+        }
 
 
         }
@@ -220,9 +227,9 @@ public class Minesweeper extends AbstractMineSweeper{
             board[y][x].flag();
 
 
-            this.viewNotifier.notifyFlagged(x, y);
+            /*this.viewNotifier.notifyFlagged(x, y);
             flagCounter = flagCounter - 1;
-            this.viewNotifier.notifyFlagCountChanged(flagCounter);
+            this.viewNotifier.notifyFlagCountChanged(flagCounter);*/
         }
 
 
@@ -233,9 +240,9 @@ public class Minesweeper extends AbstractMineSweeper{
         if (board[y][x].isFlagged()) {
             board[y][x].unflag();
 
-            this.viewNotifier.notifyUnflagged(x,y);
+            /*this.viewNotifier.notifyUnflagged(x,y);
             flagCounter = flagCounter + 1;
-            this.viewNotifier.notifyFlagCountChanged(flagCounter);
+            this.viewNotifier.notifyFlagCountChanged(flagCounter);*/
         }
 
 
@@ -243,6 +250,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void deactivateFirstTileRule() {
+        this.viewNotifier.notifyTimeElapsedChanged(Duration.ofSeconds(60));
 
     }
 
@@ -275,5 +283,8 @@ public class Minesweeper extends AbstractMineSweeper{
 
 
 }
+public void openBomb()
+{
 
+}
 }

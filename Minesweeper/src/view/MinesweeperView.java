@@ -170,11 +170,12 @@ public class MinesweeperView implements IGameStateNotifier {
         this.removeAllTileEvents();
         //throw new UnsupportedOperationException();
         int option = JOptionPane.showConfirmDialog(world, "GameOver","Game Over",JOptionPane.DEFAULT_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            this.removeAllTileEvents();
-            notifyNewGame(tiles.length,tiles[0].length);
 
-        }
+        //if (option == JOptionPane.OK_OPTION) {
+            //this.removeAllTileEvents();
+        //notifyNewGame(tiles.length,tiles[0].length);
+
+        //}
 
 
     }

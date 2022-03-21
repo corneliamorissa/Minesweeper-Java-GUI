@@ -180,44 +180,49 @@ public class Minesweeper extends AbstractMineSweeper{
 
         if (x < 0 || x >= row || y < 0 || y >= col) {
 
-        } else {
+        }
+        else {
             if (!board[x][y].isExplosive() && !board[x][y].isFlagged()) {
 
-                int bombs = bombCount(x, y);
-                if (bombs == 0) {
+                int bombs = bombCount(x,y);
+                if(bombs == 0)
+                {
                     board[x][y].open();
                     this.viewNotifier.notifyOpened(x, y, 0);
-                    for (int i = -1; i < 2; ++i) {
-                        for (int j = -1; j < 2; ++j) {
-                            if (isValid(x + i, y + j)) {
-                                if (board[x + i][y + j].isExplosive() && !board[x + i][y + j].isOpened() && !board[x + i][y + j].isOpened()) {
-                                    open(x + i, y + j);
+                    for (int r = y - 1; r <= y + 1; r++) {
+                        for (int c = x - 1; c <= x + 1; c++) {
+                            if (isValid(c,r) && !board[r][c].isExplosive() && !board[r][c].isOpened()) {
+                                    open(r,c);
 
                                 }
                             }
+                            }
                         }
-                    }
-                }
-                else{
-                        board[x][y].open();
-                        this.viewNotifier.notifyOpened(x, y, bombs);
-
-                    }
-
-                } else if (board[x][y].isExplosive() && board[x][y].isFlagged()) {
+                else {
                     board[x][y].open();
-                } else if (board[x][y].isExplosive() && !board[x][y].isFlagged()) {
-                    board[x][y].open();
-                    openBoard();
+                    this.viewNotifier.notifyOpened(x, y, bombs);
 
-                    this.viewNotifier.notifyExploded(x, y);
-                    this.viewNotifier.notifyGameLost();
                 }
+
+            }
+            else if (board[x][y].isExplosive() && board[x][y].isFlagged())
+            {
+                board[x][y].open();
             }
 
 
+            else if(board[x][y].isExplosive() && !board[x][y].isFlagged())
+            {
+                board[x][y].open();
+                openBoard();
+
+                this.viewNotifier.notifyExploded(x,y);
+                this.viewNotifier.notifyGameLost();
+            }
         }
 
+
+        }
 
 
 
@@ -278,29 +283,29 @@ public void openBoard()
                 board[x][y].open();
                 this.viewNotifier.notifyExploded(x,y);
             } else {
-
                 board[x][y].open();
 
-                this.viewNotifier.notifyOpened(x, y, bombCount(x,y));
+                this.viewNotifier.notifyOpened(x, y, 0);
             }
         }
     }
 }
 
-public int bombCount(int x, int y) {
-    int count = 0;
-    for (int i = -1; i < 2; ++i) {
-        for (int j = -1; j < 2; ++j) {
-            if (isValid(x + i,y +j)) {
-                if(board[x + i][y + j].isExplosive())
+public int bombCount(int x, int y)
+{
+    int bombCount = 0;
+
+    for (int r = y - 1; r <= y + 1; r++) {
+        for (int c = x - 1; c <= x + 1; c++) {
+            if (isValid(c,r)) {
+                if(board[r][c].isExplosive())
                 {
-                    count++;
+                    bombCount++;
                 }
             }
         }
-        }
-    return count;
-
+    }
+    return( bombCount);
 
 }
 }

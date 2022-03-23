@@ -36,6 +36,7 @@ public class MinesweeperView implements IGameStateNotifier {
     private JPanel flagPanel = new JPanel();
     private JLabel timerView = new JLabel();
     private JLabel flagCountView = new JLabel();
+    private JLabel bombCountView = new JLabel();
 
     public MinesweeperView() {
         this.window = new JFrame("Minesweeper");
@@ -81,6 +82,17 @@ public class MinesweeperView implements IGameStateNotifier {
             flagPanel.add(clockIcon);
             flagPanel.add(new JLabel("FLAG: "));
             flagPanel.add(this.flagCountView);
+        } catch (IOException e) {
+            System.out.println("Unable to locate flag resource");
+        }
+
+        flagPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        try {
+            JLabel clockIcon = new JLabel(new ImageIcon(ImageIO.read(new File(AssetPath.BOMB_ICON)).getScaledInstance(20,20,Image.SCALE_DEFAULT)));
+            clockIcon.setSize(new DimensionUIResource(50, 50));
+            flagPanel.add(clockIcon);
+            flagPanel.add(new JLabel("BOMB: "));
+            flagPanel.add(this.bombCountView);
         } catch (IOException e) {
             System.out.println("Unable to locate flag resource");
         }
@@ -187,6 +199,12 @@ public class MinesweeperView implements IGameStateNotifier {
     public void notifyFlagCountChanged(int newFlagCount) {
         this.flagCountView.setText(Integer.toString(newFlagCount));
     }
+
+    @Override
+    public void notifyBombCountChanged(int newBombCount) {
+        this.bombCountView.setText(Integer.toString(newBombCount));
+    }
+
 
     @Override
     public void notifyTimeElapsedChanged(Duration newTimeElapsed) {

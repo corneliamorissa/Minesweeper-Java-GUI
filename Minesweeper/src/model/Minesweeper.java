@@ -1,29 +1,26 @@
 package model;
 
-import notifier.IGameStateNotifier;
-import view.MinesweeperView;
+
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Random;
-import java.util.Arrays;
-import java.lang.Exception;
+
 
 public class Minesweeper extends AbstractMineSweeper{
 
-    private int width;
-    private int height;
+
     private int row;
     private int col;
     private int bomb;
-    private Difficulty level;
-    private Tile t;
-    private AbstractTile[][] bombPlace;
-    private AbstractTile[][] openTiles;
     private AbstractTile[][] board;
     private int flagCounter;
-    private long time;
+    private int maxFlag;
     private boolean firstClick;
     private int currentNumOfMines;
+    private Instant starts;
+
+
 
 
 
@@ -42,29 +39,37 @@ public class Minesweeper extends AbstractMineSweeper{
         return row;
     }
 
+
+
     @Override
     public void startNewGame(Difficulty level) {
-        this.viewNotifier.notifyTimeElapsedChanged(Duration.ofSeconds(time));
+        this.viewNotifier.notifyTimeElapsedChanged(Duration.ZERO);
+        starts =  Instant.now();
         if (level == Difficulty.EASY) {
             startNewGame(8, 8, 10);
-            this.flagCounter = 10;
+            this.maxFlag = 10;
+            //this.flagCounter = 10;
             this.viewNotifier.notifyNewGame(8,8);
 
         }
 
         if (level == Difficulty.MEDIUM) {
             startNewGame(16, 16, 40);
-            this.flagCounter = 40;
+            this.maxFlag = 40;
+            //this.flagCounter = 40;
             this.viewNotifier.notifyNewGame(16,16);
 
         }
 
         if (level == Difficulty.HARD) {
             startNewGame(16, 30, 99);
-            this.flagCounter = 99;
+            this.maxFlag = 99;
+            //this.flagCounter = 99;
             this.viewNotifier.notifyNewGame(16,30);
         }
         this.viewNotifier.notifyFlagCountChanged(flagCounter);
+        //to display remaining bomb
+        this.viewNotifier.notifyBombCountChanged(bomb);
     }
 
     public boolean isValid(int x, int y)
@@ -77,11 +82,10 @@ public class Minesweeper extends AbstractMineSweeper{
         }
     }
 
-    public void startTimer()
-    {
-        this.time = System.currentTimeMillis();
-        int i = 0;
-    }
+
+
+
+
 
 
 
@@ -134,31 +138,25 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void toggleFlag(int x, int y) {
-
-        int initialCount = flagCounter;
-        if(getTile(x,y).isFlagged())
+        if(!getTile(x,y).isFlagged())
         {
+            flag(x,y);
 
-                getTile(x,y).unflag();
-                this.viewNotifier.notifyUnflagged(x, y);
-                flagCounter = flagCounter + 1;
-                this.viewNotifier.notifyFlagCountChanged(flagCounter);
 
 
 
         }
 
-        else {
-            if(flagCounter>0) {
-                getTile(x,y).flag();
-                this.viewNotifier.notifyFlagged(x, y);
-                flagCounter = flagCounter - 1;
-                this.viewNotifier.notifyFlagCountChanged(flagCounter);
-            }
+        else if (getTile(x,y).isFlagged()){
+            unflag(x,y);
+
+        }
+        this.viewNotifier.notifyFlagCountChanged(flagCounter);
+
         }
 
 
-    }
+
 
     @Override
     public AbstractTile getTile(int x, int y) {
@@ -184,7 +182,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
         }
         else {
-            if (!getTile(x,y).isExplosive() && !getTile(x,y).isFlagged()) {
+            if (!getTile(x,y).isExplosive() && !getTile(x,y).isFlagged() && !checkIsWinning()) {
 
                 int bombs = bombCount(x,y);
                 if(bombs == 0)
@@ -196,7 +194,6 @@ public class Minesweeper extends AbstractMineSweeper{
                             if (isValid(x + c,y + r) && !getTile(x + c,y + r).isExplosive() && !getTile(x + c,y + r).isOpened())
                             {
                                     open(x +c,y + r);
-
                                 }
                             }
                             }
@@ -209,30 +206,57 @@ public class Minesweeper extends AbstractMineSweeper{
                 }
 
             }
-            else if (getTile(x,y).isExplosive() && getTile(x,y).isFlagged())
+            else if (getTile(x,y).isExplosive() && getTile(x,y).isFlagged() && !checkIsWinning())
             {
-                getTile(x,y).open();
                 deactivateFirstTileRule();
             }
 
 
-            else if(getTile(x,y).isExplosive() && !getTile(x,y).isFlagged() && this.firstClick) {
+            else if(getTile(x,y).isExplosive() && !getTile(x,y).isFlagged() && this.firstClick && !checkIsWinning()) {
                 replaceMine(x, y);
                 board[y][x] = generateEmptyTile();
                 getTile(x,y).open();
                 deactivateFirstTileRule();
 
             }
-             else if (getTile(x,y).isExplosive() && !getTile(x,y).isFlagged() && !this.firstClick) {
-                getTile(x,y).open();
+             else if (getTile(x,y).isExplosive() && !getTile(x,y).isFlagged() && !this.firstClick && !checkIsWinning()) {
+                getTile(x, y).open();
                 openBoard();
                 this.viewNotifier.notifyExploded(x, y);
                 this.viewNotifier.notifyGameLost();
+                this.viewNotifier.notifyTimeElapsedChanged(Duration.between(starts, Instant.now()));
+            }
+
+             else if(checkIsWinning())
+            {
+                this.viewNotifier.notifyGameWon();
             }
         }
 
 
         }
+
+
+        public boolean checkIsWinning()
+        {
+            boolean win = true;
+            for(int r=0; r < getHeight(); r++)
+            {
+                for(int c=0; c < getWidth(); c++)
+                {
+                    if(getTile(c,r).isExplosive() && !getTile(c,r).isFlagged())
+                    {
+                        win = false;
+                    }
+                    else if(!getTile(c,r).isExplosive() && !getTile(c,r).isOpened())
+                    {
+                        win = false;
+                    }
+                }
+            }
+            return win;
+        }
+
 
 
 
@@ -266,11 +290,17 @@ public class Minesweeper extends AbstractMineSweeper{
     public void flag(int x, int y) {
         if (!getTile(x,y).isOpened()) {
             getTile(x,y).flag();
-
-
-            /*this.viewNotifier.notifyFlagged(x, y);
-            flagCounter = flagCounter - 1;
-            this.viewNotifier.notifyFlagCountChanged(flagCounter);*/
+            this.viewNotifier.notifyFlagged(x, y);
+            /*this is what desired from toggle test, counter++ when we put flag*/
+            flagCounter = flagCounter + 1;
+            //to display remaining bomb
+            if(getTile(x,y).isExplosive())
+            {
+                bomb--;
+                this.viewNotifier.notifyBombCountChanged(bomb);
+            }
+            /*this is how counter flag supposed to in real game*/
+            //flagCounter = flagCounter -1;
         }
 
 
@@ -280,10 +310,17 @@ public class Minesweeper extends AbstractMineSweeper{
     public void unflag(int x, int y) {
         if (getTile(x,y).isFlagged()) {
             getTile(x,y).unflag();
+            this.viewNotifier.notifyUnflagged(x, y);
+            /*this is what desired from toggle test, counter-- when we put unflag*/
+            flagCounter = flagCounter - 1;
+            if(getTile(x,y).isExplosive())
+            {
+                bomb++;
+                this.viewNotifier.notifyBombCountChanged(bomb);
+            }
+            /*this is how counter flag supposed to in real game*/
+            //flagCounter = flagCounter+1;
 
-            /*this.viewNotifier.notifyUnflagged(x,y);
-            flagCounter = flagCounter + 1;
-            this.viewNotifier.notifyFlagCountChanged(flagCounter);*/
         }
 
 
@@ -292,6 +329,9 @@ public class Minesweeper extends AbstractMineSweeper{
     @Override
     public void deactivateFirstTileRule() {
         firstClick = false;
+
+
+
     }
 
     @Override

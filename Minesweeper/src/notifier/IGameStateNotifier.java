@@ -7,6 +7,7 @@ public interface IGameStateNotifier {
     void notifyGameLost();
     void notifyGameWon();
     void notifyFlagCountChanged(int newFlagCount);
+    void notifyBombCountChanged(int newBombCount);
     void notifyTimeElapsedChanged(Duration newTimeElapsed);
     void notifyOpened(int x, int y, int explosiveNeighbourCount);
     void notifyFlagged(int x, int y);

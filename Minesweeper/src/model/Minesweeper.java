@@ -138,7 +138,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void toggleFlag(int x, int y) {
-        if(!getTile(x,y).isFlagged())
+        if(!getTile(x,y).isFlagged() && (flagCounter <= maxFlag))
         {
             flag(x,y);
 

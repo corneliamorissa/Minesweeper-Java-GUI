@@ -198,7 +198,7 @@ public class Minesweeper extends AbstractMineSweeper{
         {
             for(int c=0; c < getWidth(); c++)
             {
-                if(getTile(c,r).isExplosive() && getTile(c,r).isFlagged())
+                if(getTile(c,r).isExplosive() && !getTile(c,r).isFlagged())
                 {
                     win = false;
                 }

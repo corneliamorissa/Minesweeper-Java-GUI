@@ -24,6 +24,7 @@ public class MinesweeperView implements IGameStateNotifier {
         public static final String CLOCK_ICON = "./assets/icons/clock.png";
         public static final String FLAG_ICON = "./assets/icons/flag.png";
         public static final String BOMB_ICON = "./assets/icons/bomb.png";
+        public static final String RESET_ICON = "./assets/icons/happy.png";
     }
     private PlayableMinesweeper gameModel;
     private JFrame window;
@@ -37,6 +38,7 @@ public class MinesweeperView implements IGameStateNotifier {
     private JLabel timerView = new JLabel();
     private JLabel flagCountView = new JLabel();
     private JLabel bombCountView = new JLabel();
+    JPanel ButtonPanel = new JPanel();
 
     public MinesweeperView() {
         this.window = new JFrame("Minesweeper");
@@ -86,13 +88,26 @@ public class MinesweeperView implements IGameStateNotifier {
             System.out.println("Unable to locate flag resource");
         }
 
-        flagPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        flagPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         try {
             JLabel clockIcon = new JLabel(new ImageIcon(ImageIO.read(new File(AssetPath.BOMB_ICON)).getScaledInstance(20,20,Image.SCALE_DEFAULT)));
             clockIcon.setSize(new DimensionUIResource(50, 50));
             flagPanel.add(clockIcon);
             flagPanel.add(new JLabel("BOMB: "));
             flagPanel.add(this.bombCountView);
+        } catch (IOException e) {
+            System.out.println("Unable to locate flag resource");
+        }
+
+        flagPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        try {
+            JButton reset = new JButton(new ImageIcon(ImageIO.read(new File(AssetPath.RESET_ICON)))) ;
+            reset.setSize(15, 15);
+            flagPanel.add(reset);
+            reset.addActionListener((ActionEvent e) -> {
+                if (gameModel != null)
+                    gameModel.reset();
+            });
         } catch (IOException e) {
             System.out.println("Unable to locate flag resource");
         }

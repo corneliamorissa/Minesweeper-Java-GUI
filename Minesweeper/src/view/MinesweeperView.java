@@ -201,6 +201,7 @@ public class MinesweeperView implements IGameStateNotifier {
     @Override
     public void notifyGameWon() {
         this.removeAllTileEvents();
+        int option = JOptionPane.showConfirmDialog(this.world, "Congrats! You Won the Game!", "Congrats! You Win the Game!", -1);
         throw new UnsupportedOperationException();
     }
 

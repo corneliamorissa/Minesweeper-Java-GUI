@@ -198,7 +198,7 @@ public class Minesweeper extends AbstractMineSweeper{
         {
             for(int c=0; c < getWidth(); c++)
             {
-                if(getTile(c,r).isExplosive() && getTile(c,r).isFlagged())
+                if(getTile(c,r).isExplosive() && !getTile(c,r).isFlagged())
                 {
                     win = false;
                 }
@@ -221,6 +221,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
         }
         else {
+            checkIsWinning();
             if (!getTile(x,y).isExplosive() && !getTile(x,y).isFlagged()) {
 
                 int bombs = bombCount(x,y);
@@ -268,7 +269,6 @@ public class Minesweeper extends AbstractMineSweeper{
 
              else
             {
-                checkIsWinning();
                 if(win == true) {
                     this.viewNotifier.notifyGameWon();
                     this.viewNotifier.notifyTimeElapsedChanged(Duration.between(starts, Instant.now()));
@@ -319,11 +319,11 @@ public class Minesweeper extends AbstractMineSweeper{
             /***this is what desired from toggle test, counter++ when we put flag***/
             //flagCounter = flagCounter + 1;
             /***to display remaining bomb***/
-            /*if(getTile(x,y).isExplosive())
+            if(getTile(x,y).isExplosive())
             {
                 bomb--;
                 this.viewNotifier.notifyBombCountChanged(bomb);
-            }*/
+            }
             /***this is how counter flag supposed to in real game***/
             flagCounter = flagCounter -1;
         }
@@ -339,11 +339,11 @@ public class Minesweeper extends AbstractMineSweeper{
             /***this is what desired from toggle test, counter-- when we put unflag***/
             //flagCounter = flagCounter - 1;
             /***to toggle bomb so we can test if we win the game Jpanle for winning is working***/
-            /*if(getTile(x,y).isExplosive())
+            if(getTile(x,y).isExplosive())
             {
                 bomb++;
                 this.viewNotifier.notifyBombCountChanged(bomb);
-            }*/
+            }
             /***this is how counter flag supposed to in real game***/
             flagCounter = flagCounter+1;
 

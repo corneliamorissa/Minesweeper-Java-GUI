@@ -73,7 +73,6 @@ public class MinesweeperView implements IGameStateNotifier {
             clockIcon.setSize(new DimensionUIResource(50, 50));
             timerPanel.add(clockIcon);
             timerPanel.add(new JLabel("TIME ELAPSED: "));
-
             timerPanel.add(this.timerView);
         } catch (IOException e) {
             System.out.println("Unable to locate clock resource");
@@ -204,7 +203,7 @@ public class MinesweeperView implements IGameStateNotifier {
     public void notifyGameWon() {
         this.removeAllTileEvents();
         int option = JOptionPane.showConfirmDialog(this.world, "Congrats! You Won the Game!" + "\n" + "time elapsed: " + timerView.getText() + "\n" + "Congrats!!", "Congrats! You Win the Game!", -1);
-        throw new UnsupportedOperationException();
+        //throw new UnsupportedOperationException();
     }
 
     private void removeAllTileEvents() {
@@ -226,7 +225,6 @@ public class MinesweeperView implements IGameStateNotifier {
 
     @Override
     public void notifyTimeElapsedChanged(Duration newTimeElapsed) {
-
         timerView.setText(
                     String.format("%d:%02d", newTimeElapsed.toMinutesPart(), newTimeElapsed.toSecondsPart()));  
         

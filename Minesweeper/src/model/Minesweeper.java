@@ -2,9 +2,12 @@ package model;
 
 
 
+import org.junit.rules.Stopwatch;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Random;
+import java.util.Timer;
 
 
 public class Minesweeper extends AbstractMineSweeper{
@@ -21,6 +24,7 @@ public class Minesweeper extends AbstractMineSweeper{
     private Instant starts;
     private Difficulty level;
     private boolean win;
+    private Stopwatch stopwatch;
 
 
 
@@ -28,6 +32,8 @@ public class Minesweeper extends AbstractMineSweeper{
 
     public Minesweeper(){
         this.firstClick = true;
+
+
     }
 
 
@@ -216,7 +222,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void open(int x, int y) {
-
+        this.viewNotifier.notifyTimeElapsedChanged(Duration.between(starts, Instant.now()));
         if (x < 0 || x >= col || y < 0 || y >= row) {
 
         }
@@ -263,15 +269,17 @@ public class Minesweeper extends AbstractMineSweeper{
                 getTile(x, y).open();
                 openBoard();
                 this.viewNotifier.notifyExploded(x, y);
-                this.viewNotifier.notifyGameLost();
                 this.viewNotifier.notifyTimeElapsedChanged(Duration.between(starts, Instant.now()));
+                this.viewNotifier.notifyGameLost();
+
             }
 
              else
             {
                 if(win == true) {
-                    this.viewNotifier.notifyGameWon();
+
                     this.viewNotifier.notifyTimeElapsedChanged(Duration.between(starts, Instant.now()));
+                    this.viewNotifier.notifyGameWon();
                 }
             }
         }
@@ -313,6 +321,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void flag(int x, int y) {
+        this.viewNotifier.notifyTimeElapsedChanged(Duration.between(starts, Instant.now()));
         if (!getTile(x,y).isOpened()) {
             getTile(x,y).flag();
             this.viewNotifier.notifyFlagged(x, y);
@@ -333,6 +342,7 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @Override
     public void unflag(int x, int y) {
+        this.viewNotifier.notifyTimeElapsedChanged(Duration.between(starts, Instant.now()));
         if (getTile(x,y).isFlagged()) {
             getTile(x,y).unflag();
             this.viewNotifier.notifyUnflagged(x, y);

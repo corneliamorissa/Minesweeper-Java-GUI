@@ -3,6 +3,7 @@ package view;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.event.MouseListener;
 
 import notifier.ITileStateNotifier;
@@ -27,7 +28,9 @@ public class TileView extends JButton implements ITileStateNotifier {
     @Override
     public void notifyOpened(int explosiveNeighbourCount) {
         super.setIcon(null);
+
         super.setText((explosiveNeighbourCount> 0)? Integer.toString(explosiveNeighbourCount) : "");
+
         super.setEnabled(false);
     }
 

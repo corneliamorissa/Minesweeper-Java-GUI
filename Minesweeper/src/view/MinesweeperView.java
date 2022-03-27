@@ -226,6 +226,7 @@ public class MinesweeperView implements IGameStateNotifier {
 
     @Override
     public void notifyTimeElapsedChanged(Duration newTimeElapsed) {
+
         timerView.setText(
                     String.format("%d:%02d", newTimeElapsed.toMinutesPart(), newTimeElapsed.toSecondsPart()));  
         

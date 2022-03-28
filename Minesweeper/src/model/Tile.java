@@ -47,19 +47,11 @@ public class Tile extends AbstractTile {
       open = false;
 
   }
-  public void setlocation(int x, int y)
-
-  {
-    xAxis = x;
-    yAxis = y;
-
-  }
 
   @Override
   public void unflag() {
     flag = false;
   }
-
 
   @Override
     public boolean isFlagged() {

@@ -33,6 +33,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     public Minesweeper() {
 
+
     }
 
 
@@ -197,15 +198,21 @@ public class Minesweeper extends AbstractMineSweeper {
         win = true;
         for (int r = 0; r < getHeight(); r++) {
             for (int c = 0; c < getWidth(); c++) {
-                if (getTile(c, r).isExplosive() && !getTile(c, r).isFlagged()) {
+                /*if (getTile(c, r).isExplosive() && !getTile(c, r).isFlagged()) {
                     win = false;
-                } else if (!getTile(c, r).isExplosive() && !getTile(c, r).isOpened()) {
+                }*/
+                if (!getTile(c, r).isExplosive() && !getTile(c, r).isOpened()) {
                     win = false;
                 } else if (getTile(c, r).isExplosive() && getTile(c, r).isOpened()) {
                     win = false;
                 }
             }
         }
+    }
+
+    public boolean getWin()
+    {
+        return win;
     }
 
     @Override
@@ -217,7 +224,7 @@ public class Minesweeper extends AbstractMineSweeper {
         } else {
 
             checkIsWinning();
-            if (!getTile(x, y).isExplosive() && !getTile(x, y).isFlagged()) {
+            if (!getTile(x, y).isExplosive() && !getTile(x, y).isFlagged() && !getWin()) {
 
                 int bombs = bombCount(x, y);
                 if (bombs == 0) {
@@ -231,21 +238,27 @@ public class Minesweeper extends AbstractMineSweeper {
                         }
                     }
                 } else {
+                    if(getWin())
+                    {
+                        this.over = true;
+                        this.viewNotifier.notifyGameWon();
+
+                    }
                     getTile(x, y).open();
                     deactivateFirstTileRule();
                     this.viewNotifier.notifyOpened(x, y, bombs);
 
                 }
 
-            } else if (getTile(x, y).isExplosive() && getTile(x, y).isFlagged()) {
+            } else if (getTile(x, y).isExplosive() && getTile(x, y).isFlagged() && !getWin()) {
                 deactivateFirstTileRule();
-            } else if (getTile(x, y).isExplosive() && !getTile(x, y).isFlagged() && this.firstClick) {
+            } else if (getTile(x, y).isExplosive() && !getTile(x, y).isFlagged() && this.firstClick && !getWin()) {
                 replaceMine(x, y);
                 board[y][x] = generateEmptyTile();
                 getTile(x, y).open();
                 deactivateFirstTileRule();
 
-            } else if (getTile(x, y).isExplosive() && !getTile(x, y).isFlagged() && !this.firstClick) {
+            } else if (getTile(x, y).isExplosive() && !getTile(x, y).isFlagged() && !this.firstClick && !getWin()) {
                 getTile(x, y).open();
                 openBoard();
 
@@ -257,14 +270,14 @@ public class Minesweeper extends AbstractMineSweeper {
                 this.viewNotifier.notifyGameLost();
 
 
-            } else {
-                if (win == true) {
+            }
+            else if (getWin()) {
                     this.over = true;
 
                    // this.viewNotifier.notifyTimeElapsedChanged(Duration.between(starts, Instant.now()));
                     this.viewNotifier.notifyGameWon();
 
-                }
+
             }
         }
 

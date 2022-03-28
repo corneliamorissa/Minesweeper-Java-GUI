@@ -45,9 +45,6 @@ public class Tile extends AbstractTile {
   public void flag() {
       flag = true;
       open = false;
-      //this.viewNotifier.notifyFlagged();
-
-
 
   }
   public void setlocation(int x, int y)
@@ -61,8 +58,6 @@ public class Tile extends AbstractTile {
   @Override
   public void unflag() {
     flag = false;
-
-    //this.viewNotifier.notifyUnflagged();
   }
 
 

@@ -14,7 +14,9 @@ public class App {
         /**
             Your code to bind your game model to the game user interface
         */
+
         view.setGameModel(model);
         model.startNewGame(Difficulty.EASY);
+
     }
 }
